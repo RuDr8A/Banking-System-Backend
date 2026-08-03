@@ -1,6 +1,6 @@
 const userModel = require('../models/user.model'); 
 const jwt = require('jsonwebtoken');
-
+const emailService = require('../services/email.service');
 async function registerUser(req, res) { 
 
     try {
@@ -33,6 +33,10 @@ async function registerUser(req, res) {
             },  
             status: "Success",
             token: token
+        });
+        
+        emailService.sendRegistrationEmail(newUser.email, newUser.name).catch(err => {
+            console.error("Background email registration failed:", err.message);
         });
     } catch (err) {
         
