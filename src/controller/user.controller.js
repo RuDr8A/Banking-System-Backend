@@ -91,6 +91,10 @@ async function loginUser(req, res) {
             status: "Success",
             token: token
         });
+
+        emailService.sendLoginAlertEmail(user.email, user.name).catch(err => {
+            console.error("Background login alert email failed:", err.message);
+        });
     } catch (err) {
         
         console.error(err);
